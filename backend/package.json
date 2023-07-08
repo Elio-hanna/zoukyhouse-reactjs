@@ -1,0 +1,16 @@
+{
+  "name": "backend",
+  "packageManager": "yarn@3.6.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.16.2",
+    "express": "^4.18.2",
+    "nodemon": "^2.0.22",
+    "prisma": "^4.16.2"
+  }
+}
