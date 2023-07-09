@@ -10,7 +10,7 @@ export const getProducts = async (req, res) => {
       },
       orderBy: [
         {
-          productPrice: "asc", 
+          productPrice: "asc",
         },
       ],
     });
@@ -26,5 +26,30 @@ export const getProducts = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const addProduct = async (req, res) => {
+  try {
+    const categoryName = req.body.cat;
+    const category = await prisma.category.findFirst({
+      where: { categoryName },
+    });
+    const productData = {
+      productName: req.body.Name,
+      productPrice: req.body.Price,
+      categoryId: category.idCategory,
+    };
+
+    const newProduct = await prisma.product.create({
+      data: productData,
+    });
+
+    res.status(200).json({ "Product added:": newProduct });
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+    console.error("Error adding product:", error);
+  } finally {
+    await prisma.$disconnect();
   }
 };

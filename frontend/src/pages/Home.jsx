@@ -1,8 +1,10 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
-import axios from "axios";
+import useFetchCategories from "../Hooks/usefetchCategories";
+import useFetchProducts from "../Hooks/useFetchProducts";
+import LoadingScreen from "./LoadingScreen";
 
-const Section1 = styled.div`
+const Header = styled.div`
   height: 23vh;
   scroll-snap-align: center;
   display: flex;
@@ -50,7 +52,7 @@ const ContentWrapper = styled.div`
   align-items: center;
 `;
 
-const Top = styled.div`
+const CategoriesSection = styled.div`
   flex: 2;
   height: 15vh;
   scroll-snap-align: center;
@@ -66,7 +68,7 @@ const Top = styled.div`
   }
 `;
 
-const Bot = styled.div`
+const MenuSection = styled.div`
   margin-top: 20px;
   flex: 5;
   height: 27vh;
@@ -187,30 +189,21 @@ const Itemstyle = styled.span`
 `;
 
 const Home = () => {
+  const [loading, setLoading] = useState(true);
   const categoryRefs = useRef({});
-  const [categories, setCategories] = useState([]);
-  const [menuItems, setMenuItems] = useState([]);
-
+  const [menuItems] = useFetchProducts();
+  const [categories] = useFetchCategories();
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const res = await axios.get(`/categories`);
-        setCategories(res.data);
-      } catch (err) {
-        console.log(err);
+    setTimeout(() => {
+      if (menuItems) {
+        setLoading(false);
       }
-    };
-    const fetchItems = async () => {
-      try {
-        const res = await axios.get(`/products`);
-        setMenuItems(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchCategories();
-    fetchItems();
-  }, []);
+    }, 2000);
+  }, [menuItems]);
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   const handleButtonClick = (categoryName) => {
     const categoryElement = categoryRefs.current[categoryName];
@@ -220,24 +213,27 @@ const Home = () => {
   };
 
   const groupByCategory = (items) => {
-    const groupedItems = {};
+    if (items) {
+      const groupedItems = {};
 
-    items.forEach((item) => {
-      if (groupedItems[item.category]) {
-        groupedItems[item.category].push(item);
-      } else {
-        groupedItems[item.category] = [item];
-      }
-    });
+      items.forEach((item) => {
+        if (groupedItems[item.category]) {
+          groupedItems[item.category].push(item);
+        } else {
+          groupedItems[item.category] = [item];
+        }
+      });
 
-    return groupedItems;
+      return groupedItems;
+    } else {
+      return "";
+    }
   };
 
   const groupedMenuItems = groupByCategory(menuItems);
-
   return (
     <div>
-      <Section1>
+      <Header>
         <Container>
           <Info>
             Menu Created By{" "}
@@ -253,22 +249,23 @@ const Home = () => {
         <Container>
           <Title>ZoukyHouse Menu</Title>
         </Container>
-      </Section1>
+      </Header>
       <ContentWrapper>
-        <Top>
+        <CategoriesSection>
           <SectionButton>
-            {categories.map((category) => (
-              <ContainerButton key={category.idCategory}>
-                <Button
-                  onClick={() => handleButtonClick(category.categoryName)}
-                >
-                  {category.categoryName}
-                </Button>
-              </ContainerButton>
-            ))}
+            {categories &&
+              categories.map((category) => (
+                <ContainerButton key={category.idCategory}>
+                  <Button
+                    onClick={() => handleButtonClick(category.categoryName)}
+                  >
+                    {category.categoryName}
+                  </Button>
+                </ContainerButton>
+              ))}
           </SectionButton>
-        </Top>
-        <Bot>
+        </CategoriesSection>
+        <MenuSection>
           <Menu>
             {Object.entries(groupedMenuItems).map(([category, items]) => (
               <ContainerMenu
@@ -293,7 +290,7 @@ const Home = () => {
               </ContainerMenu>
             ))}
           </Menu>
-        </Bot>
+        </MenuSection>
       </ContentWrapper>
     </div>
   );
