@@ -3,7 +3,7 @@ import styled from "styled-components";
 import useFetchCategories from "../Hooks/usefetchCategories";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
-// popup form
+// toast message
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 

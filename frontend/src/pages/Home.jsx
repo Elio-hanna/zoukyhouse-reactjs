@@ -191,7 +191,7 @@ const Itemstyle = styled.span`
 const Home = () => {
   const [loading, setLoading] = useState(true);
   const categoryRefs = useRef({});
-  const [menuItems] = useFetchProducts();
+  const [menuItems, setMenuItems] = useFetchProducts();
   const [categories] = useFetchCategories();
   useEffect(() => {
     setTimeout(() => {

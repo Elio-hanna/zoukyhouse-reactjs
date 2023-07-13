@@ -53,3 +53,20 @@ export const addProduct = async (req, res) => {
     await prisma.$disconnect();
   }
 };
+
+export const deleteProduct = async (req, res) => {
+  try {
+    const deletedItem = await prisma.product.delete({
+      where: {
+        idproduct: parseInt(req.params.id),
+      },
+    });
+
+    res.status(200).json({ "Product deleted:": deletedItem });
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+    console.error("Error adding product:", error);
+  } finally {
+    await prisma.$disconnect();
+  }
+};
