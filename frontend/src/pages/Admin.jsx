@@ -20,6 +20,43 @@ import "react-toastify/dist/ReactToastify.css";
 import useFetchCategories from "../Hooks/usefetchCategories";
 import Edit from "./Edit";
 
+const Header = styled("div")`
+  height: 13vh;
+  scroll-snap-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #444;
+`;
+
+const Container = styled("div")`
+  height: 100vh;
+  scroll-snap-align: center;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Info = styled("h5")`
+  color: white;
+  font-family: Arial, sans-serif;
+  margin-bottom: 0;
+`;
+const Link = styled("a")`
+  color: white;
+  cursor: pointer;
+`;
+const Phone = styled("h5")`
+  color: white;
+  font-family: Arial, sans-serif;
+  margin-top: 0;
+`;
+const Title = styled("h1")`
+  color: white;
+  margin-top: 0;
+`;
+
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -138,6 +175,23 @@ const Admin = () => {
 
   return (
     <>
+    <Header>
+        <Container>
+          <Info>
+            Menu Created By{" "}
+            <Link
+              href="https://www.linkedin.com/in/elio-hanna/"
+              target="_blank"
+            >
+              Elio HANNA
+            </Link>
+          </Info>
+          <Phone>Tel: 71266943</Phone>
+        </Container>
+        <Container>
+          <Title>ZoukyHouse Menu</Title>
+        </Container>
+      </Header>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
