@@ -41,7 +41,7 @@ My App is a web application built with React and Node.js. It allows users to che
 
 The home page displays the e-menu with a list of products. Each product is shown with its name, category, and price. Users can browse through the products and view the details.
 
-![Home Page Screenshot](./docs/Home.png)
+![Home Page Screenshot](https://github.com/Elio-hanna/zoukyhouse-reactjs/blob/main/docs/Home.PNG)
 
 
 ### Admin Page
