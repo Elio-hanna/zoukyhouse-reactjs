@@ -1,6 +1,7 @@
 import Home from "./pages/Home.jsx";
 import Add from "./pages/Add.jsx";
 import Admin from "./pages/Admin.jsx";
+import Edit from "./pages/Edit.jsx";
 
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -18,6 +19,10 @@ function App() {
     {
       path: "/admin",
       element: <Admin />,
+    },
+    {
+      path: "/edit",
+      element: <Edit />,
     },
   ]);
   return (

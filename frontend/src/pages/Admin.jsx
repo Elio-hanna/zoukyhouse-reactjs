@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
+
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -16,11 +17,8 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 //edit
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
+import useFetchCategories from "../Hooks/usefetchCategories";
+import Edit from "./Edit";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -49,10 +47,11 @@ function createData(id, name, category, price) {
 const Admin = () => {
   const [loading, setLoading] = useState(true);
   const [menuItems, setMenuItems] = useFetchProducts();
+  const [categories] = useFetchCategories();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editedData, setEditedData] = useState({});
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -98,15 +97,13 @@ const Admin = () => {
       console.log(error);
     }
   };
+
   //edit
 
   const handleOpenEditDialog = (id) => {
     const itemToEdit = menuItems.find((item) => item.idproduct === id);
     setEditedData(itemToEdit);
-    setEditDialogOpen(true);
-  };
-  const handleCloseEditDialog = () => {
-    setEditDialogOpen(false);
+    setOpen(true);
   };
 
   const handleEditInputChange = (e) => {
@@ -117,12 +114,22 @@ const Admin = () => {
     }));
   };
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const handleSaveChanges = async () => {
     try {
       // Send a request to the backend to update the data
       await axios.put(`/products/${editedData.idproduct}`, editedData);
       toast.success("Product updated successfully!");
-      handleCloseEditDialog();
+      // Update the menuItems state with the updated product
+      setMenuItems((prevItems) =>
+        prevItems.map((item) =>
+          item.idproduct === editedData.idproduct ? editedData : item
+        )
+      );
+      handleClose();
     } catch (error) {
       toast.error("Error while updating the product!");
       console.log(error);
@@ -179,37 +186,14 @@ const Admin = () => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      <Dialog
-        open={editDialogOpen}
-        onClose={handleCloseEditDialog}
-        maxWidth="sm"
-        fullWidth
-      >
-        <DialogTitle>Edit Product</DialogTitle>
-        
-        <DialogContent>
-        <label htmlFor="Name">Product Name:</label>
-          <input
-            type="text"
-            name="Name"
-            value={editedData.productName}
-            onChange={handleEditInputChange}
-          />
-          <label htmlFor="Price">Price:</label>
-          <input
-            type="number"
-            step="0.01"
-            min="0"
-            name="Price"
-            value={editedData.productPrice}
-            onChange={handleEditInputChange}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseEditDialog}>Cancel</Button>
-          <Button onClick={handleSaveChanges}>Save Changes</Button>
-        </DialogActions>
-      </Dialog>
+      <Edit
+        open={open}
+        handleClose={handleClose}
+        handleSaveChanges={handleSaveChanges}
+        handleEditInputChange={handleEditInputChange}
+        editedData={editedData}
+        categories={categories}
+      />
     </>
   );
 };

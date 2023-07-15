@@ -70,3 +70,30 @@ export const deleteProduct = async (req, res) => {
     await prisma.$disconnect();
   }
 };
+
+export const updateProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const categoryName = req.body.category;
+    const category = await prisma.category.findFirst({
+      where: { categoryName },
+    });
+
+    const updatedProduct = await prisma.product.update({
+      where: {
+        idproduct: parseInt(id),
+      },
+      data: {
+        productName: req.body.productName,
+        productPrice: req.body.productPrice,
+        categoryId: category.idCategory,
+      },
+    });
+    res.status(200).json({ "Product updated:": updatedProduct });
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+    console.error("Error updating product:", error);
+  } finally {
+    await prisma.$disconnect();
+  }
+};
