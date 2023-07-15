@@ -41,7 +41,7 @@ My App is a web application built with React and Node.js. It allows users to che
 
 The home page displays the e-menu with a list of products. Each product is shown with its name, category, and price. Users can browse through the products and view the details.
 
-![Home Page Screenshot](https://github.com/Elio-hanna/zoukyhouse-reactjs/blob/main/docs/Home.PNG)
+![Home Page Screenshot](./docs/Home.PNG)
 
 
 ### Admin Page
@@ -60,7 +60,7 @@ To delete a product, click on the "Delete" button next to the product you want t
 
 The Add Product page allows admins to add new products to the e-menu. Admins can enter the product details such as name, category, and price in the provided form fields.
 
-![Add Product Page Screenshot](docs/Add.png)
+![Add Product Page Screenshot](./docs/Add.PNG)
 
 Fill in the required fields and click "Add Product" to add the new product to the list.
 
@@ -68,7 +68,7 @@ Fill in the required fields and click "Add Product" to add the new product to th
 
 The Edit Product page allows admins to modify the details of an existing product. Admins can update the name, category, and price of the selected product.
 
-![Edit Product Page Screenshot](docs/Edit.png)
+![Edit Product Page Screenshot](./docs/Edit.PNG)
 
 Make the desired changes in the form fields and click "Save Changes" to update the product.
 
@@ -76,7 +76,7 @@ Make the desired changes in the form fields and click "Save Changes" to update t
 
 The Delete Product functionality allows admins to remove a product from the list. When you click the "Delete" button next to a product, this will permanently delete the product from the e-menu.
 
-![Delete Product Screenshot](docs/Delete.png)
+![Delete Product Screenshot](./docs/Delete.PNG)
 
 
 
