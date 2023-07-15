@@ -1,15 +1,24 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import useFetchCategories from "../Hooks/usefetchCategories";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
-// toast message
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
+import CloseIcon from "@mui/icons-material/Close";
 
+const CloseButton = styled(Button)`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+`;
 
 const Section = styled.div`
-  height: 100vh;
+  height: 100%;
   scroll-snap-align: center;
   display: flex;
   flex-direction: column;
@@ -29,6 +38,7 @@ const FormSection = styled.div`
   max-width: 500px;
   margin: 0 auto;
   min-width: 500px;
+  height: 100%;
 `;
 
 const Header = styled.h1`
@@ -80,64 +90,98 @@ const SubmitBtn = styled.button`
   }
 `;
 
-const Add = () => {
+const Add = ({ open, handleClose }) => {
   const [categories] = useFetchCategories();
   const [cat, setCat] = useState("");
   const [Name, setName] = useState("");
   const [Price, setPrice] = useState("");
-  const navigate = useNavigate();
+
+  const validateForm = () => {
+    const errors = {};
+
+    if (!Name.trim()) {
+      toast.error("Name is required");
+      errors.name = "Name is required";
+    }
+    if (!cat.trim()) {
+      toast.error("Category is required");
+      errors.category = "Category is required";
+    }
+
+    if (!Price.trim()) {
+      toast.error("Price is required");
+      errors.price = "Price is required";
+    }
+
+    return Object.keys(errors).length === 0;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const res = await axios.post(`/products/`, {
-        cat,
-        Name,
-        Price,
-      });
-      toast.success('Product added successfully!');
-    } catch (error) {
-      toast.error('Error while adding the product!');
-      console.log(error);
+    const ret = validateForm();
+    if (ret == false) {
+      return;
+    } else {
+      try {
+        const res = await axios.post(`/products/`, {
+          cat,
+          Name,
+          Price,
+        });
+        toast.success("Product added successfully!");
+        handleClose();
+      } catch (error) {
+        toast.error("Error while adding the product!");
+        console.log(error);
+      }
     }
-    
   };
 
   return (
     <Section>
-      <FormSection>
-        <Header>Add Product</Header>
-        <Label>Category:</Label>
-        <CategorySelect
-          name="Category"
-          onChange={(e) => setCat(e.target.value)}
-          required
-        >
-          {categories &&
-            categories.map((category) => (
-              <option key={category.idCategory} value={category.categoryName}>
-                {category.categoryName}
-              </option>
-            ))}
-        </CategorySelect>
-        <Label>Name:</Label>
-        <Input
-          type="text"
-          name="Name"
-          onChange={(e) => setName(e.target.value)}
-          required
-        ></Input>
-        <Label>Price:</Label>
-        <Input
-          type="number"
-          step="0.01"
-          min="0"
-          name="Price"
-          onChange={(e) => setPrice(e.target.value)}
-          required
-        ></Input>
-        <SubmitBtn onClick={handleSubmit}>Add Product</SubmitBtn>
-      </FormSection>
+      <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+        <CloseButton onClick={handleClose}>
+          <CloseIcon />
+        </CloseButton>
+        <DialogContent>
+          <FormSection>
+            <Header>Add Product</Header>
+            <Label>Category:</Label>
+            <CategorySelect
+              name="Category"
+              onChange={(e) => setCat(e.target.value)}
+              required
+            >
+              {categories &&
+                categories.map((category) => (
+                  <option
+                    key={category.idCategory}
+                    value={category.categoryName}
+                  >
+                    {category.categoryName}
+                  </option>
+                ))}
+            </CategorySelect>
+            <Label>Name:</Label>
+            <Input
+              type="text"
+              name="Name"
+              onChange={(e) => setName(e.target.value)}
+              required
+            ></Input>
+            <Label>Price:</Label>
+            <Input
+              type="number"
+              step="0.01"
+              min="0"
+              name="Price"
+              onChange={(e) => setPrice(e.target.value)}
+              required
+            ></Input>
+            <SubmitBtn onClick={handleSubmit}>Add Product</SubmitBtn>
+          </FormSection>
+        </DialogContent>
+      </Dialog>
       <ToastContainer />
     </Section>
   );

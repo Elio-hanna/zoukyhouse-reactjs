@@ -20,6 +20,9 @@ import "react-toastify/dist/ReactToastify.css";
 import useFetchCategories from "../Hooks/usefetchCategories";
 import Edit from "./Edit";
 
+//add
+import Add from "./Add";
+
 const Header = styled("div")`
   height: 13vh;
   scroll-snap-align: center;
@@ -56,6 +59,49 @@ const Title = styled("h1")`
   margin-top: 0;
 `;
 
+const AddButton = styled("button")`
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  
+  &:hover {
+    background-color: #3e8e41;
+  }
+`
+const EditButton = styled("button")`
+  background-color: #2196f3;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #1976d2;
+  }
+`;
+
+const DeleteButton = styled("button")`
+  background-color: #f44336;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #d32f2f;
+  }
+`;
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -89,6 +135,7 @@ const Admin = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [editedData, setEditedData] = useState({});
   const [open, setOpen] = useState(false);
+  const [showAdd, setShowAdd] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -173,9 +220,17 @@ const Admin = () => {
     }
   };
 
+  //add
+  const handleAddClick = () => {
+    setShowAdd(true);
+  };
+  const handleAddClose = () => {
+    setShowAdd(false);
+  };
+
   return (
     <>
-    <Header>
+      <Header>
         <Container>
           <Info>
             Menu Created By{" "}
@@ -199,8 +254,9 @@ const Admin = () => {
               <StyledTableCell>Product Name</StyledTableCell>
               <StyledTableCell align="center">Category</StyledTableCell>
               <StyledTableCell align="center">Price</StyledTableCell>
-              <StyledTableCell align="center"></StyledTableCell>
-              <StyledTableCell align="center"></StyledTableCell>
+              <StyledTableCell align="center" colSpan={2}>
+                <AddButton onClick={handleAddClick}>Add</AddButton>
+              </StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -218,12 +274,12 @@ const Admin = () => {
                     ${parseFloat(row.price).toFixed(2)}
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <button onClick={() => handleOpenEditDialog(row.id)}>
+                    <EditButton onClick={() => handleOpenEditDialog(row.id)}>
                       Edit
-                    </button>
+                    </EditButton>
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <button onClick={() => handleDelete(row.id)}>Delete</button>
+                    <DeleteButton onClick={() => handleDelete(row.id)}>Delete</DeleteButton>
                   </StyledTableCell>
                 </StyledTableRow>
               ))}
@@ -248,6 +304,7 @@ const Admin = () => {
         editedData={editedData}
         categories={categories}
       />
+      {showAdd && <Add open={showAdd} handleClose={handleAddClose} />}
     </>
   );
 };

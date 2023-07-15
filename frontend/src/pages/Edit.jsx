@@ -31,33 +31,35 @@ const StyledDialogActions = muiStyled(DialogActions)(({ theme }) => ({
 }));
 
 
-const Input = styled("input")`
-    display: block;
-    width: 95%;
-    padding: 10px;
-    border: none;
-    border-radius: 3px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    font-size: 16px;
-    color: #333;
-    margin-bottom: 5px;
-  `;
-  const Label = styled("label")`
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 5px;
-    display: block;
-  `;
-  const CategorySelect = styled("select")`
-    display: block;
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 3px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    font-size: 16px;
-    color: #333;
-  `;
+const Input = styled.input`
+  display: block;
+  width: 95%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 30px;
+`;
+const CategorySelect = styled.select`
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 30px;
+`;
+const Label = styled.label`
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  display: block;
+`;
 
 const PopupForm = ({ open, handleClose, handleSaveChanges, handleEditInputChange, categories, editedData }) => {
   return (
