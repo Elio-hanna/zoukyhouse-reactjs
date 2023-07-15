@@ -48,7 +48,7 @@ The home page displays the e-menu with a list of products. Each product is shown
 
 The Admin page allows admins to manage the products. Admins can add new products, edit existing products, and delete products from the list.
 
-![Admin Page Screenshot](docs/Admin.png)
+![Admin Page Screenshot](./docs/Admin.PNG)
 
 To add a new product, click on the "Add" button. This will open the Add Product form where you can enter the product details and click "Add Product" to add the product.
 
